@@ -107,3 +107,19 @@ Scenario simulations explore hypothetical changes to model inputs and should not
 **Navadeep8383**
 
 GitHub Repository: https://github.com/Navadeep8383/wildlife-extinction-risk-prediction
+## Project Screenshots
+
+### Main Dashboard
+![Main Dashboard](screenshots/main-dashboard.png)
+
+### Conservation Emergency Scanner
+![Conservation Scanner](screenshots/conservation-scanner.png)
+
+### Species Profile and Risk Explanation
+![Species Profile](screenshots/species-profile.png)
+
+### Scenario Simulation
+![Scenario Simulation](screenshots/scenario-simulation.png)
+
+### Species Comparison
+![Species Comparison](screenshots/species-comparison.png)
