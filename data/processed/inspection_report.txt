@@ -1,0 +1,77 @@
+================================================================================
+DATASET INSPECTION REPORT: data/processed/merged_dataset.csv
+================================================================================
+
+1. DATASET DIMENSIONS
+--------------------------------------------------------------------------------
+Total Rows:    30,711
+Total Columns: 39
+
+
+2. COLUMN SCHEMA, INFERRED DATA TYPES & MISSING VALUE COUNTS
+--------------------------------------------------------------------------------
+ # | Column Name                    | Data Type       | Missing Count | Missing %
+---|--------------------------------|-----------------|---------------|-----------
+ 1 | ScientificName                 | string / object |             0 |     0.00%
+ 2 | GenusName                      | string / object |             0 |     0.00%
+ 3 | BodyMass                       | float64         |         6,867 |    22.36%
+ 4 | DirectSourceBodyMass           | string / object |         5,939 |    19.34%
+ 5 | Verticality                    | string / object |           341 |     1.11%
+ 6 | DirectSourceVerticality        | string / object |             0 |     0.00%
+ 7 | TrophicLevel                   | float64 / int64 |        11,262 |    36.67%
+ 8 | DirectSourceTrophiclevel       | string / object |         5,939 |    19.34%
+ 9 | Nocturnality                   | float64 / int64 |         5,671 |    18.47%
+10 | DirectSourceNocturnality       | string / object |             0 |     0.00%
+11 | MajorHabitatSum                | float64 / int64 |         6,030 |    19.63%
+12 | DirectSourceHabitat            | string / object |             0 |     0.00%
+13 | Latitude                       | float64         |             0 |     0.00%
+14 | AnnuMeanTemp                   | float64         |             0 |     0.00%
+15 | AnnuPrecip                     | float64         |             0 |     0.00%
+16 | TempSeasonality                | float64         |             0 |     0.00%
+17 | PrecipSeasonality              | float64         |             0 |     0.00%
+18 | Elevation                      | float64         |             0 |     0.00%
+19 | DirectSourceGeo                | string / object |             0 |     0.00%
+20 | Rangesize                      | int64           |             0 |     0.00%
+21 | HumanFootPrint                 | float64         |            87 |     0.28%
+22 | InvasiveSpeciesResidual        | float64         |         5,939 |    19.34%
+23 | DiscriptionTime                | int64           |             0 |     0.00%
+24 | SourceAnthropogenicPressures   | string / object |             0 |     0.00%
+25 | BodyLength                     | float64         |        24,772 |    80.66%
+26 | DirectSourceBodyLength         | string / object |        24,772 |    80.66%
+27 | TypeGrow                       | float64 / int64 |        25,899 |    84.33%
+28 | DirectSourceTypeGrow           | string / object |        24,772 |    80.66%
+29 | MajorHabitat_Sum               | float64 / int64 |        24,772 |    80.66%
+30 | InvasiavePressure              | float64         |        24,772 |    80.66%
+31 | AssessmentId                   | int64           |             0 |     0.00%
+32 | ClassName                      | string / object |             0 |     0.00%
+33 | OrderName                      | string / object |             0 |     0.00%
+34 | FamilyName                     | string / object |             0 |     0.00%
+35 | EndemicType                    | int64           |             0 |     0.00%
+36 | RedlistCategory                | string / object |             0 |     0.00%
+37 | RedlistCriteria                | string / object |        22,198 |    72.28%
+38 | CriteriaVersion                | float64         |             0 |     0.00%
+39 | PopulationTrend                | string / object |           399 |     1.30%
+
+Note: Columns with 24,772 missing values (80.66%) correspond to amphibian-specific
+trait fields (BodyLength, TypeGrow, MajorHabitat_Sum, InvasiavePressure).
+The dataset contains 5,939 amphibians and 24,772 non-amphibian tetrapods
+(30,711 total species).
+
+
+3. REDLISTCATEGORY VALUE COUNTS
+--------------------------------------------------------------------------------
+ # | RedlistCategory                   | Count   | Percentage | Status Group
+---|-----------------------------------|---------|------------|--------------------------------
+ 1 | Least Concern                     |  21,490 |     69.97% | Non-threatened
+ 2 | Endangered                        |   2,665 |      8.68% | Threatened
+ 3 | Vulnerable                        |   2,511 |      8.18% | Threatened
+ 4 | Near Threatened                   |   2,217 |      7.22% | Non-threatened / Potential
+ 5 | Critically Endangered             |   1,495 |      4.87% | Threatened
+ 6 | Extinct                           |     298 |      0.97% | Extinct
+ 7 | Lower Risk/Near Threatened        |      17 |      0.06% | Historical category (pre-v3.1)
+ 8 | Extinct In The Wild               |      10 |      0.03% | Extinct in the wild
+ 9 | Lower Risk/Least Concern          |       6 |      0.02% | Historical category (pre-v3.1)
+10 | Lower Risk/Conservation Dependent |       2 |      0.01% | Historical category (pre-v3.1)
+---|-----------------------------------|---------|------------|--------------------------------
+   | Total                             |  30,711 |    100.00% | 
+================================================================================

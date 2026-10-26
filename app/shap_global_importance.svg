@@ -1,0 +1,50 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 700' font-family='Arial, sans-serif'>
+<rect width='1000' height='700' fill='#fbfcfd'/>
+<text x='40' y='45' font-size='20' font-weight='bold' fill='#111827'>Top 15 Global Features Influencing Extinction Risk (TreeSHAP)</text>
+<text x='40' y='72' font-size='13' fill='#6b7280'>Mean absolute SHAP value across representative untouched holdout test instances</text>
+<text x='265' y='121' font-size='12' text-anchor='end' fill='#1f2937'>PopulationTrend_Decreasing</text>
+<rect x='280' y='105' width='556' height='22' rx='3' fill='#2563eb'/>
+<text x='844' y='121' font-size='11' font-weight='bold' fill='#4b5563'>0.0477</text>
+<text x='265' y='157' font-size='12' text-anchor='end' fill='#1f2937'>Rangesize</text>
+<rect x='280' y='141' width='533' height='22' rx='3' fill='#2563eb'/>
+<text x='821' y='157' font-size='11' font-weight='bold' fill='#4b5563'>0.0457</text>
+<text x='265' y='193' font-size='12' text-anchor='end' fill='#1f2937'>PopulationTrend_Stable</text>
+<rect x='280' y='177' width='517' height='22' rx='3' fill='#2563eb'/>
+<text x='805' y='193' font-size='11' font-weight='bold' fill='#4b5563'>0.0443</text>
+<text x='265' y='229' font-size='12' text-anchor='end' fill='#1f2937'>EndemicType</text>
+<rect x='280' y='213' width='273' height='22' rx='3' fill='#2563eb'/>
+<text x='561' y='229' font-size='11' font-weight='bold' fill='#4b5563'>0.0234</text>
+<text x='265' y='265' font-size='12' text-anchor='end' fill='#1f2937'>BodyMass</text>
+<rect x='280' y='249' width='216' height='22' rx='3' fill='#2563eb'/>
+<text x='504' y='265' font-size='11' font-weight='bold' fill='#4b5563'>0.0185</text>
+<text x='265' y='301' font-size='12' text-anchor='end' fill='#1f2937'>PopulationTrend_Unknown</text>
+<rect x='280' y='285' width='180' height='22' rx='3' fill='#2563eb'/>
+<text x='468' y='301' font-size='11' font-weight='bold' fill='#4b5563'>0.0154</text>
+<text x='265' y='337' font-size='12' text-anchor='end' fill='#1f2937'>InvasiveSpeciesResidual</text>
+<rect x='280' y='321' width='156' height='22' rx='3' fill='#2563eb'/>
+<text x='444' y='337' font-size='11' font-weight='bold' fill='#4b5563'>0.0134</text>
+<text x='265' y='373' font-size='12' text-anchor='end' fill='#1f2937'>ClassName_Aves</text>
+<rect x='280' y='357' width='140' height='22' rx='3' fill='#2563eb'/>
+<text x='428' y='373' font-size='11' font-weight='bold' fill='#4b5563'>0.0120</text>
+<text x='265' y='409' font-size='12' text-anchor='end' fill='#1f2937'>OrderName_Passeriformes</text>
+<rect x='280' y='393' width='135' height='22' rx='3' fill='#2563eb'/>
+<text x='423' y='409' font-size='11' font-weight='bold' fill='#4b5563'>0.0116</text>
+<text x='265' y='445' font-size='12' text-anchor='end' fill='#1f2937'>Verticality</text>
+<rect x='280' y='429' width='123' height='22' rx='3' fill='#2563eb'/>
+<text x='411' y='445' font-size='11' font-weight='bold' fill='#4b5563'>0.0106</text>
+<text x='265' y='481' font-size='12' text-anchor='end' fill='#1f2937'>Elevation</text>
+<rect x='280' y='465' width='117' height='22' rx='3' fill='#2563eb'/>
+<text x='405' y='481' font-size='11' font-weight='bold' fill='#4b5563'>0.0101</text>
+<text x='265' y='517' font-size='12' text-anchor='end' fill='#1f2937'>TempSeasonality</text>
+<rect x='280' y='501' width='106' height='22' rx='3' fill='#2563eb'/>
+<text x='394' y='517' font-size='11' font-weight='bold' fill='#4b5563'>0.0091</text>
+<text x='265' y='553' font-size='12' text-anchor='end' fill='#1f2937'>ClassName_Amphibia</text>
+<rect x='280' y='537' width='97' height='22' rx='3' fill='#2563eb'/>
+<text x='385' y='553' font-size='11' font-weight='bold' fill='#4b5563'>0.0084</text>
+<text x='265' y='589' font-size='12' text-anchor='end' fill='#1f2937'>MajorHabitatSum</text>
+<rect x='280' y='573' width='88' height='22' rx='3' fill='#2563eb'/>
+<text x='376' y='589' font-size='11' font-weight='bold' fill='#4b5563'>0.0076</text>
+<text x='265' y='625' font-size='12' text-anchor='end' fill='#1f2937'>AnnuPrecip</text>
+<rect x='280' y='609' width='86' height='22' rx='3' fill='#2563eb'/>
+<text x='374' y='625' font-size='11' font-weight='bold' fill='#4b5563'>0.0074</text>
+</svg>

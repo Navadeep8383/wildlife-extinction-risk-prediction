@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wildlife Conservation Intelligence — 3D Digital Twin</title>
+  <meta name="description" content="Wildlife Conservation Intelligence: Interactive 3D Digital Twin for Global Tetrapod Extinction Risk Assessment, Real-Time TreeSHAP Explainability, and Scenario Simulations.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+</head>
+<body>
+
+  <!-- 3D Canvas Viewport -->
+  <div id="globe-canvas-container"></div>
+
+  <!-- Top Navigation & Global Header -->
+  <header class="top-nav">
+    <div class="brand-section">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>Wildlife Conservation Intelligence</h1>
+        <p>Wildlife Extinction Intelligence &bull; 3D Conservation Digital Twin</p>
+      </div>
+    </div>
+
+    <!-- Search Box with Live Autocomplete -->
+    <div class="nav-center">
+      <div class="search-box">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="species-search-input" placeholder="Search 30,711 tetrapod species (e.g. Polyplectron, Dodo)..." autocomplete="off">
+        <div id="search-dropdown" class="search-dropdown"></div>
+      </div>
+    </div>
+
+    <!-- Navigation Action Toolbar -->
+    <div class="nav-actions">
+      <button id="btn-emergency-scanner" class="nav-btn" title="Global Conservation Emergency Scanner (Ranked Priority Cohorts)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <span>Scanner</span>
+      </button>
+      <button id="btn-open-compare" class="nav-btn" title="Compare two catalog species side-by-side">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+        </svg>
+        <span>Compare</span>
+      </button>
+      <button id="btn-toggle-explorer" class="nav-btn" title="Toggle Global Risk Explorer Layer">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span id="text-explorer-toggle">Risk Explorer</span>
+      </button>
+      <button id="btn-demo-tour" class="nav-btn" title="Guided Demo Investigation Tour across verified species">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        <span>Demo Tour</span>
+      </button>
+    </div>
+
+    <!-- Live Backend API Status Indicator -->
+    <div class="nav-status">
+      <div id="api-status-dot" class="status-dot"></div>
+      <span id="api-status-text">CONNECTING (8000)...</span>
+    </div>
+  </header>
+
+  <!-- Quick HUD Stats Overlay on Globe -->
+  <div class="globe-overlay-stats">
+    <div class="stat-chip">
+      <span class="stat-chip-num">30,711</span>
+      <span class="stat-chip-label">Catalog Species</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-chip-num">100%</span>
+      <span class="stat-chip-label">Global Tetrapods</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-chip-num">86.4%</span>
+      <span class="stat-chip-label">RF Accuracy</span>
+    </div>
+  </div>
+
+  <!-- Interactive Controls Guide -->
+  <div class="globe-controls-hint">
+    <span>🖱️ Drag to rotate</span>
+    <span>•</span>
+    <span>🔍 Scroll to zoom</span>
+    <span>•</span>
+    <span>📍 Click real beacon pins</span>
+  </div>
+
+  <!-- Future Risk Timeline Floating Widget Near 3D Globe -->
+  <div id="globe-timeline-widget" class="globe-timeline-widget">
+    <div class="timeline-header">
+      <div class="timeline-title-row">
+        <span class="timeline-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Future Risk Trajectory (2026 &ndash; 2070)
+        </span>
+        <span id="timeline-disclaimer" class="timeline-disclaimer-badge">Simulated Scenarios &bull; Not Forecasts</span>
+      </div>
+      <div id="timeline-scenario-desc" class="timeline-scenario-desc">2026 Baseline &bull; Present Empirical Assessment</div>
+    </div>
+
+    <!-- Interactive Year Selector Steps -->
+    <div class="timeline-nav">
+      <div class="timeline-buttons" id="timeline-buttons-container">
+        <button class="timeline-btn active" data-year="2026">
+          <span class="timeline-year">2026</span>
+          <span class="timeline-tag">Baseline</span>
+        </button>
+        <button class="timeline-btn" data-year="2030">
+          <span class="timeline-year">2030</span>
+          <span class="timeline-tag">Near-Term</span>
+        </button>
+        <button class="timeline-btn" data-year="2040">
+          <span class="timeline-year">2040</span>
+          <span class="timeline-tag">Transition</span>
+        </button>
+        <button class="timeline-btn" data-year="2050">
+          <span class="timeline-year">2050</span>
+          <span class="timeline-tag">Benchmark</span>
+        </button>
+        <button class="timeline-btn" data-year="2070">
+          <span class="timeline-year">2070</span>
+          <span class="timeline-tag">Exposure</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Visual SVG Trajectory Curve -->
+    <div class="timeline-chart-wrapper">
+      <div class="timeline-chart-label">Extinction Probability Trajectory:</div>
+      <svg id="timeline-svg-chart" class="timeline-svg-chart" viewBox="0 0 340 46" preserveAspectRatio="none">
+        <path id="timeline-svg-path" d="" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+        <g id="timeline-svg-dots"></g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Globe Beacon Tooltip -->
+  <div id="globe-tooltip" class="globe-tooltip"></div>
+
+  <!-- Right-Side Information Panel -->
+  <aside class="right-panel" id="species-info-panel">
+    <!-- Dynamic Loading Overlay -->
+    <div id="panel-loading-overlay" class="panel-loading-overlay hidden">
+      <div class="spinner"></div>
+      <div class="loading-status-text">Computing TreeSHAP &amp; Risk Metrics...</div>
+    </div>
+
+    <!-- Error Alert Banner -->
+    <div id="panel-error-banner" class="panel-error-banner hidden">
+      <div class="error-content">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span id="panel-error-msg">Failed to fetch intelligence profile.</span>
+      </div>
+      <button id="panel-error-retry" class="btn-retry">Retry</button>
+    </div>
+
+    <div class="panel-header">
+      <div>
+        <h2>Conservation Intelligence</h2>
+        <div style="display: flex; gap: 6px; align-items: center; margin-top: 4px;">
+          <span id="panel-timeline-badge" class="panel-badge" style="background: rgba(6,182,212,0.18); color: #38bdf8; border: 1px solid rgba(6,182,212,0.4);">2026 BASELINE</span>
+          <span id="panel-iucn-badge" class="panel-badge" style="background: rgba(245,158,11,0.2); color: #fbbf24;">Endangered</span>
+          <span id="panel-pred-badge" class="panel-badge" style="background: rgba(16,185,129,0.2); color: #34d399;">PRED: THREATENED</span>
+        </div>
+      </div>
+      <button id="btn-export-report" class="btn-export-report" title="Generate & Download Species Intelligence Dossier">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>Report</span>
+      </button>
+    </div>
+
+    <div class="panel-content">
+      <!-- Species Verified Media & Archival Silhouette Card -->
+      <div id="species-image-card" class="species-image-card">
+        <!-- Skeleton Loading State -->
+        <div id="species-image-skeleton" class="species-image-skeleton">
+          <div class="skeleton-shimmer"></div>
+          <div class="skeleton-content">
+            <svg class="skeleton-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            <span class="skeleton-text">Fetching verified biodiversity media...</span>
+          </div>
+        </div>
+
+        <!-- Verified High-Resolution Photograph Container -->
+        <div id="species-image-container" class="species-image-container hidden">
+          <img id="species-photo" class="species-photo" src="" alt="Verified Species Photograph" loading="lazy">
+          <div class="image-gradient-overlay"></div>
+          <div id="species-image-attribution" class="species-image-attribution">
+            <div class="attr-left">
+              <span id="image-source-badge" class="image-source-badge">Wikimedia Commons</span>
+              <span id="image-author-text" class="image-author-text">Jurong Bird Park</span>
+            </div>
+            <a id="image-license-link" class="image-license-badge" href="#" target="_blank" rel="noopener noreferrer">CC BY-SA</a>
+          </div>
+        </div>
+
+        <!-- Taxonomic Vector Silhouette Fallback Container -->
+        <div id="species-silhouette-container" class="species-silhouette-container hidden">
+          <div id="species-silhouette-icon" class="species-silhouette-icon">
+            <!-- Dynamic Class Silhouette SVG rendered by UIController -->
+          </div>
+          <div class="silhouette-info">
+            <div class="silhouette-tag">
+              <span class="silhouette-pill">Taxonomic Archival Record</span>
+              <span id="silhouette-class-name" class="silhouette-class-name">Aves</span>
+            </div>
+            <div id="silhouette-desc" class="silhouette-desc">Historical or unphotographed taxon in global biodiversity repositories.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Species Profile Hero -->
+      <div class="species-hero">
+        <div id="panel-sci-name" class="sci-name">Polyplectron schleiermacheri</div>
+        <div id="panel-common-tag" class="common-tag">Aves &bull; Galliformes &bull; Phasianidae</div>
+        <div id="panel-coords-tag" class="coords-tag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="12" y1="2" x2="12" y2="22"></line>
+          </svg>
+          <span id="panel-coords-text">Lat: +0.24° (Dataset Centroid)</span>
+        </div>
+      </div>
+
+      <!-- AI Risk Fingerprint Card (Intervention Interpretation + Non-Causal Explainability) -->
+      <div class="card-section ai-risk-fingerprint-card">
+        <div class="card-title">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            <span>AI Risk Fingerprint</span>
+          </div>
+          <span class="fingerprint-badge">Model Attribution</span>
+        </div>
+
+        <!-- Explicit Non-Causal Explanation Disclaimer Badge -->
+        <div class="non-causal-disclaimer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span><strong>Model Feature Association &bull; Non-Causal Explanation:</strong> SHAP values reflect correlational patterns learned by the ExtraTreesClassifier from historical IUCN records. These indicate mathematical model sensitivity, not proven direct real-world causal mechanisms.</span>
+        </div>
+
+        <!-- Intervention-Oriented Feature Interpretation Box -->
+        <div id="fingerprint-interpretation-box" class="fingerprint-interpretation-box">
+          <div class="interpretation-header">
+            <span class="interp-dot"></span>
+            <span>Intervention-Oriented Feature Interpretation</span>
+          </div>
+          <div id="fingerprint-interpretation-text" class="interp-text">
+            Evaluating primary drivers of extinction vulnerability based strictly on available model features...
+          </div>
+        </div>
+      </div>
+
+      <!-- Probability Distribution Card -->
+      <div class="card-section">
+        <div class="card-title">
+          <span>Extinction Probability Distribution</span>
+          <span style="font-family: var(--font-mono); font-size: 10px; color: #10b981;">500-Tree Forest</span>
+        </div>
+        <div class="prob-meter">
+          <div class="prob-bars">
+            <div id="prob-bar-low" class="prob-bar-segment" style="width: 38%; background: #10b981;"></div>
+            <div id="prob-bar-thr" class="prob-bar-segment" style="width: 54.4%; background: #f59e0b;"></div>
+            <div id="prob-bar-ext" class="prob-bar-segment" style="width: 7.6%; background: #ef4444;"></div>
+          </div>
+          <div class="prob-labels">
+            <div class="prob-stat">
+              <span>Low Risk</span>
+              <span id="prob-val-low" style="color: #10b981;">38.0%</span>
+            </div>
+            <div class="prob-stat">
+              <span>Threatened</span>
+              <span id="prob-val-thr" style="color: #f59e0b;">54.4%</span>
+            </div>
+            <div class="prob-stat">
+              <span>Extinct</span>
+              <span id="prob-val-ext" style="color: #ef4444;">7.6%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top TreeSHAP Contributors Card -->
+      <div class="card-section">
+        <div class="card-title">
+          <span>Top SHAP Feature Contributors</span>
+          <span style="font-family: var(--font-mono); font-size: 10px; color: #06b6d4;">Local Explainability</span>
+        </div>
+        <div id="shap-list-container" class="shap-list">
+          <!-- Populated dynamically by UIController -->
+        </div>
+      </div>
+
+      <!-- Conservation Priority Score Card -->
+      <div class="card-section">
+        <div class="card-title">
+          <span>Conservation Priority Score (CPS)</span>
+          <span id="cps-score-value" style="font-family: var(--font-mono); font-size: 12.5px; font-weight: 700; color: #fbbf24;">34.6 / 100</span>
+        </div>
+        <div class="cps-bar-container" style="margin-bottom: 8px;">
+          <div class="cps-bar-bg" style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
+            <div id="cps-bar-fill" class="cps-bar-fill" style="height: 100%; width: 34.6%; background: linear-gradient(90deg, #10b981 0%, #f59e0b 55%, #ef4444 100%); border-radius: 3px; transition: width 0.5s ease;"></div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #94a3b8; line-height: 1.4;">
+          Combines predicted extinction probability, geographic restriction, human footprint, and invasive alien species pressure.
+        </div>
+      </div>
+
+      <!-- Tailored Recommendations Card -->
+      <div class="card-section">
+        <div class="card-title">
+          <span>Targeted Action Recommendations</span>
+          <span style="font-family: var(--font-mono); font-size: 10px; color: #34d399;">Evidence-Based</span>
+        </div>
+        <div id="recommendations-container">
+          <!-- Populated dynamically by UIController -->
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Bottom Simulation Controls Dock & Collapsible Drawer -->
+  <section class="bottom-controls" id="bottom-controls">
+    <!-- Collapsible Drawer Overlay (Strictly hidden on initial load; max-height 28vh) -->
+    <div id="scenario-drawer-overlay" class="scenario-drawer collapsed hidden">
+      <div class="scenario-drawer-header">
+        <div class="drawer-header-left">
+          <div class="drawer-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2">
+              <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+            </svg>
+            <span>Scenario Intelligence &amp; Impact Analysis</span>
+          </div>
+          <span class="drawer-subtitle">Counterfactual Sensitivity &bull; Trajectory Comparison</span>
+        </div>
+        <button id="btn-close-scenario-drawer" class="btn-drawer-close" title="Close Scenario Analysis" aria-label="Close Scenario Analysis">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="scenario-drawer-body">
+        <!-- Scenario Simulator Action Impact Breakdown (Compact Card Grid) -->
+        <div id="action-impact-breakdown" class="action-impact-breakdown">
+          <div class="breakdown-header">
+            <div class="breakdown-title">
+              <span class="breakdown-dot"></span>
+              <span>Action Impact Breakdown</span>
+            </div>
+            <div id="impact-transition-badge" class="impact-transition-badge">Baseline: THREATENED (54.4%) ➔ Scenario: THREATENED (54.4%)</div>
+          </div>
+          <div class="breakdown-pills">
+            <div class="impact-pill" id="pill-habitat">
+              <span class="pill-label">Habitat Loss</span>
+              <span class="pill-delta" id="delta-habitat">0.0%</span>
+              <span class="pill-dir" id="dir-habitat">Neutral</span>
+            </div>
+            <div class="impact-pill" id="pill-human">
+              <span class="pill-label">Human Encroach</span>
+              <span class="pill-delta" id="delta-human">0.0%</span>
+              <span class="pill-dir" id="dir-human">Neutral</span>
+            </div>
+            <div class="impact-pill" id="pill-climate">
+              <span class="pill-label">Climate Warming</span>
+              <span class="pill-delta" id="delta-climate">+0.0°C</span>
+              <span class="pill-dir" id="dir-climate">Neutral</span>
+            </div>
+            <div class="impact-pill" id="pill-conservation">
+              <span class="pill-label">Conservation</span>
+              <span class="pill-delta" id="delta-conservation">0.0%</span>
+              <span class="pill-dir" id="dir-conservation">Neutral</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conservation What-If Battle: Compact Side-by-Side Comparison -->
+        <div id="what-if-battle-section" class="what-if-battle-section">
+          <div class="battle-header">
+            <div class="battle-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+              </svg>
+              <span>Conservation What-If Battle</span>
+            </div>
+            <span class="battle-disclaimer-badge">Counterfactual Simulation &bull; Not Forecast</span>
+          </div>
+
+          <div class="battle-grid">
+            <!-- Baseline Card -->
+            <div class="battle-card baseline-card">
+              <div class="battle-card-header">
+                <span class="battle-badge-tag baseline-tag">BASELINE</span>
+                <span id="battle-baseline-target" class="battle-target-text">THREATENED</span>
+              </div>
+              <div class="battle-metric-row">
+                <span>Extinction Prob:</span>
+                <span id="battle-baseline-ext-prob" class="battle-metric-val">54.4%</span>
+              </div>
+              <div class="battle-prob-mini">
+                <div id="battle-base-bar-low" style="width: 38%; background: #10b981;"></div>
+                <div id="battle-base-bar-thr" style="width: 54.4%; background: #f59e0b;"></div>
+                <div id="battle-base-bar-ext" style="width: 7.6%; background: #ef4444;"></div>
+              </div>
+              <div class="battle-labels">
+                <span id="battle-base-lbl-low">Low: 38%</span>
+                <span id="battle-base-lbl-thr">Thr: 54%</span>
+                <span id="battle-base-lbl-ext">Ext: 8%</span>
+              </div>
+            </div>
+
+            <!-- VS Divider Badge -->
+            <div class="battle-vs-divider">
+              <span>VS</span>
+              <div id="battle-net-risk-shift" class="battle-shift-tag neutral">0.0% Shift</div>
+            </div>
+
+            <!-- Simulated Scenario Card -->
+            <div class="battle-card scenario-card">
+              <div class="battle-card-header">
+                <span id="battle-scenario-tag" class="battle-badge-tag scenario-tag">SIMULATION</span>
+                <span id="battle-scenario-target" class="battle-target-text">AWAITING RUN</span>
+              </div>
+              <div class="battle-metric-row">
+                <span>Simulated Prob:</span>
+                <span id="battle-scenario-ext-prob" class="battle-metric-val">--</span>
+              </div>
+              <div class="battle-prob-mini">
+                <div id="battle-scen-bar-low" style="width: 0%; background: #10b981;"></div>
+                <div id="battle-scen-bar-thr" style="width: 0%; background: #f59e0b;"></div>
+                <div id="battle-scen-bar-ext" style="width: 0%; background: #ef4444;"></div>
+              </div>
+              <div class="battle-labels">
+                <span id="battle-scen-lbl-low">Low: --</span>
+                <span id="battle-scen-lbl-thr">Thr: --</span>
+                <span id="battle-scen-lbl-ext">Ext: --</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compact Single-Row Scenario Dock Bar -->
+    <div class="scenario-dock-bar">
+      <div class="dock-title-badge" title="Real-time Random Forest Environmental Levers">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        <span>SCENARIO</span>
+      </div>
+
+      <!-- Habitat Loss Slider -->
+      <div class="dock-slider-group slider-group">
+        <div class="dock-slider-header slider-label">
+          <span class="dock-slider-label">Habitat Loss</span>
+          <span id="val-habitat" class="dock-slider-val">0%</span>
+        </div>
+        <input type="range" id="slider-habitat" min="0" max="1" step="0.05" value="0">
+      </div>
+
+      <!-- Human Pressure Slider -->
+      <div class="dock-slider-group slider-group">
+        <div class="dock-slider-header slider-label">
+          <span class="dock-slider-label">Human Encroach</span>
+          <span id="val-human" class="dock-slider-val">0%</span>
+        </div>
+        <input type="range" id="slider-human" min="-0.5" max="1" step="0.05" value="0">
+      </div>
+
+      <!-- Climate Volatility Slider -->
+      <div class="dock-slider-group slider-group">
+        <div class="dock-slider-header slider-label">
+          <span class="dock-slider-label">Climate Warming</span>
+          <span id="val-climate" class="dock-slider-val">+0.0°C</span>
+        </div>
+        <input type="range" id="slider-climate" min="-0.5" max="2.5" step="0.1" value="0">
+      </div>
+
+      <!-- Conservation Mitigation Effort Slider -->
+      <div class="dock-slider-group slider-group">
+        <div class="dock-slider-header slider-label">
+          <span class="dock-slider-label">Conservation</span>
+          <span id="val-conservation" class="dock-slider-val">0%</span>
+        </div>
+        <input type="range" id="slider-conservation" min="0" max="1" step="0.05" value="0">
+      </div>
+
+      <!-- Run Simulation Action Button -->
+      <button id="btn-run-simulation" class="btn-simulate dock-btn-simulate" title="Run counterfactual model inference">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <span>Run Scenario</span>
+      </button>
+
+      <!-- Polished Scenario Analysis Tab / Button -->
+      <button id="btn-toggle-scenario-drawer" class="btn-scenario-analysis-tab btn-toggle-drawer" title="Open/Close Scenario Intelligence & Impact Analysis">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+        </svg>
+        <span id="drawer-toggle-text">Scenario Analysis</span>
+        <span id="drawer-toggle-icon" class="tab-chevron">▲</span>
+        <span id="drawer-toggle-badge" class="drawer-toggle-badge hidden">MODIFIED</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Global Risk Explorer Analytical Legend & Disclaimer Overlay -->
+  <div id="explorer-hud-legend" class="explorer-hud-legend hidden">
+    <div class="explorer-legend-header">
+      <div class="legend-title-row">
+        <span class="legend-live-dot"></span>
+        <strong>Global Risk Explorer Layer</strong>
+      </div>
+      <button id="btn-close-explorer-legend" class="btn-legend-close" title="Close Legend">&times;</button>
+    </div>
+    <div class="explorer-legend-items">
+      <div class="legend-item"><span class="legend-chip chip-ext"></span> Extinct Species (Centroid Latitudes)</div>
+      <div class="legend-item"><span class="legend-chip chip-thr"></span> Threatened (Vulnerable / Endangered)</div>
+      <div class="legend-item"><span class="legend-chip chip-low"></span> Low Extinction Risk Species</div>
+    </div>
+    <div class="explorer-disclaimer">
+      <strong>Analytical Distribution Notice:</strong> Parallels depict actual dataset centroid latitudes from the 30,711 catalog. Longitudinal spacing along each parallel is an analytical visualization distribution, not an exact geographic range.
+    </div>
+  </div>
+
+  <!-- Demo Tour Floating HUD Widget -->
+  <div id="demo-tour-widget" class="demo-tour-widget hidden">
+    <div class="demo-tour-header">
+      <span class="demo-badge">DEMO INVESTIGATION TOUR</span>
+      <span id="demo-tour-step" class="demo-step">Species 1 of 6</span>
+      <button id="btn-close-demo" class="btn-legend-close" title="Exit Tour">&times;</button>
+    </div>
+    <div id="demo-tour-species-name" class="demo-species-name">Polyplectron schleiermacheri</div>
+    <div id="demo-tour-desc" class="demo-species-desc">Aves &bull; Galliformes &bull; Endangered (Threatened)</div>
+    <div class="demo-tour-controls">
+      <button id="btn-demo-prev" class="demo-ctrl-btn" title="Previous Species">⏮ Prev</button>
+      <button id="btn-demo-play" class="demo-ctrl-btn demo-play-btn" title="Auto-advance toggle">⏸ Pause</button>
+      <button id="btn-demo-next" class="demo-ctrl-btn" title="Next Species">Next ⏭</button>
+    </div>
+  </div>
+
+  <!-- Species Comparison Mode Modal Dialog -->
+  <div id="compare-modal" class="compare-modal hidden">
+    <div class="compare-modal-backdrop" id="compare-modal-backdrop"></div>
+    <div class="compare-modal-dialog">
+      <div class="compare-modal-header">
+        <div class="compare-header-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
+            <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+          </svg>
+          <div>
+            <h2>Species Comparison Mode</h2>
+            <div style="font-size: 11px; color: #94a3b8;">Side-by-Side In-Depth Empirical Multi-Taxon Analysis (30,711 Catalog)</div>
+          </div>
+        </div>
+        <button id="btn-close-compare" class="compare-close-btn" title="Close Comparison">&times;</button>
+      </div>
+
+      <div class="compare-selectors">
+        <!-- Species A Selector -->
+        <div class="compare-search-box">
+          <label>Species A (Focal Taxon):</label>
+          <div class="input-wrapper">
+            <input type="text" id="compare-search-a" placeholder="Search catalog species (e.g. Polyplectron)..." autocomplete="off">
+            <div id="compare-dropdown-a" class="search-dropdown"></div>
+          </div>
+        </div>
+        <!-- Species B Selector -->
+        <div class="compare-search-box">
+          <label>Species B (Comparative Taxon):</label>
+          <div class="input-wrapper">
+            <input type="text" id="compare-search-b" placeholder="Search catalog species (e.g. Raphus, Melogale)..." autocomplete="off">
+            <div id="compare-dropdown-b" class="search-dropdown"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side-by-side comparison body -->
+      <div id="compare-body" class="compare-body">
+        <div class="compare-empty-state">Select two species above to view real empirical comparison data.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conservation Emergency Scanner Modal Dialog -->
+  <div id="emergency-scanner-modal" class="scanner-modal hidden">
+    <div id="scanner-modal-backdrop" class="scanner-backdrop"></div>
+    <div class="scanner-modal-content">
+      <div class="scanner-header">
+        <div class="scanner-title-block">
+          <div class="scanner-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Conservation Emergency Scanner</h2>
+            <p>Global multi-criteria priority ranking across real 30,711 tetrapod species &bull; Real ML predictions &amp; CPS scores</p>
+          </div>
+        </div>
+        <button id="btn-close-scanner" class="scanner-close-btn" title="Close Scanner">&times;</button>
+      </div>
+
+      <!-- Tier Navigation Tabs & Filter Bar -->
+      <div class="scanner-toolbar">
+        <div class="scanner-tabs">
+          <button id="tab-scanner-critical" class="scanner-tab active" data-tier="critical">
+            <span>🚨 Critical Urgency</span>
+            <span id="badge-count-critical" class="scanner-tab-count">--</span>
+          </button>
+          <button id="tab-scanner-high" class="scanner-tab" data-tier="high_priority">
+            <span>⚠️ High Priority</span>
+            <span id="badge-count-high" class="scanner-tab-count">--</span>
+          </button>
+          <button id="tab-scanner-stable" class="scanner-tab" data-tier="stable">
+            <span>🛡️ Stable / Low Risk</span>
+            <span id="badge-count-stable" class="scanner-tab-count">--</span>
+          </button>
+        </div>
+
+        <div class="scanner-filters">
+          <select id="scanner-class-filter" class="scanner-select">
+            <option value="">All Taxonomic Classes</option>
+            <option value="Aves">Aves (Birds)</option>
+            <option value="Mammalia">Mammalia (Mammals)</option>
+            <option value="Reptilia">Reptilia (Reptiles)</option>
+            <option value="Amphibia">Amphibia (Amphibians)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Scanner Species List Body -->
+      <div id="scanner-species-list" class="scanner-species-list">
+        <div class="scanner-loading-state">
+          <div class="scanner-spinner"></div>
+          <span>Scanning global catalog species across priority tiers...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ES Module Application Bootstrap -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>
